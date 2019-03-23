@@ -7,6 +7,8 @@ package tools
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
 	"os"
 )
 
@@ -18,6 +20,15 @@ func Decode(ruta string, modelo interface{}) error {
 		defer js.Close()
 		deco := json.NewDecoder(js)
 		err = deco.Decode(&modelo)
+	}
+	return err
+}
+
+//DecodeRequest mapea una peticion con body json a un struct
+func DecodeRequest(r *http.Request, modelo interface{}) error {
+	jsn, err := ioutil.ReadAll(r.Body)
+	if err == nil {
+		err = json.Unmarshal(jsn, &modelo)
 	}
 	return err
 }
