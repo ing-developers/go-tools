@@ -2,6 +2,7 @@ package tools
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -19,10 +20,11 @@ func Responder(w http.ResponseWriter, estado bool, error interface{}, mensaje st
 		mensaje,
 		datos,
 	}
-	if !debug && esJSON {
-		resp.Error = nil
-	}
+	log.Println(fmt.Sprintf("%#v",resp))
 	if esJSON {
+		if !debug {
+			resp.Error = nil
+		}
 		js, err := json.Marshal(resp)
 		if err == nil {
 			CleanCache(w)
@@ -34,4 +36,5 @@ func Responder(w http.ResponseWriter, estado bool, error interface{}, mensaje st
 	} else {
 		w.Write([]byte(mensaje))
 	}
+
 }
