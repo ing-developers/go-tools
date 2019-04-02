@@ -10,17 +10,17 @@ import (
 //Responder escribe en el response la respuesta establecida
 func Responder(w http.ResponseWriter, estado bool, error interface{}, mensaje string, datos interface{}, esJSON bool, debug bool) {
 	resp := struct {
-		Estado  bool
-		Error   interface{}
-		Mensaje string
-		Datos   interface{}
+		Estado  bool        `json:"estado"`
+		Error   interface{} `json:"error"`
+		Mensaje string      `json:"mensaje"`
+		Datos   interface{} `json:"datos"`
 	}{
 		estado,
 		error,
 		mensaje,
 		datos,
 	}
-	log.Println(fmt.Sprintf("%#v",resp))
+	log.Println(fmt.Sprintf("%#v", resp))
 	if esJSON {
 		if !debug {
 			resp.Error = nil
