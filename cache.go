@@ -3,7 +3,7 @@
 *  Email andres.latorre@ing-developers.com
 *  Copyright (c) 2019. All rights reserved.
 */
-package tools
+package go_tools
 
 import (
 	"net/http"

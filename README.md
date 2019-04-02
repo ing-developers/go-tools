@@ -11,3 +11,4 @@ Conjunto de herramientas para go
 5. Renderizar template go
 6. Respuesta basica a clientes
 7. Upload archivo
+8. JWT

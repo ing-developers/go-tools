@@ -1,4 +1,4 @@
-package tools
+package go_tools
 
 import (
 	"encoding/json"
@@ -8,9 +8,9 @@ import (
 )
 
 //Responder escribe en el response la respuesta establecida
-func Responder(w http.ResponseWriter, estado bool, error interface{}, mensaje string, datos interface{}, esJSON bool, debug bool) {
+func Responder(w http.ResponseWriter, estado int, error interface{}, mensaje string, datos interface{}, esJSON bool, debug bool) {
 	resp := struct {
-		Estado  bool        `json:"estado"`
+		Estado  int         `json:"estado"`
 		Error   interface{} `json:"error"`
 		Mensaje string      `json:"mensaje"`
 		Datos   interface{} `json:"datos"`
@@ -29,11 +29,13 @@ func Responder(w http.ResponseWriter, estado bool, error interface{}, mensaje st
 		if err == nil {
 			CleanCache(w)
 			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(estado)
 			w.Write(js)
 		} else {
 			log.Println("Error Marshal JSON: ", err)
 		}
 	} else {
+		w.WriteHeader(estado)
 		w.Write([]byte(mensaje))
 	}
 
