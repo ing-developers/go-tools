@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 )
 
 //Decode mapea un archivo json a un struct
@@ -25,10 +26,17 @@ func Decode(ruta string, modelo interface{}) error {
 }
 
 //DecodeRequest mapea una peticion con body json a un struct
-func DecodeRequest(r *http.Request, modelo interface{}) error {
+func DecodeBody(r *http.Request, modelo interface{}) error {
 	jsn, err := ioutil.ReadAll(r.Body)
 	if err == nil {
 		err = json.Unmarshal(jsn, &modelo)
 	}
 	return err
+}
+
+//DecodeRequest mapea una peticion con body json a un struct
+func DecodeParams(r *http.Request, modelo interface{}) error {
+	params := r.URL.Query().Encode()
+	replacer := strings.NewReplacer("&", "\",\"", "=", "\":\"")
+	return json.Unmarshal([]byte(`{"`+replacer.Replace(params)+`"}`), &modelo)
 }
